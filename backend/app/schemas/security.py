@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import List
 
 class SecureRequest(BaseModel):
     prompt: str
@@ -8,6 +9,7 @@ class SecureResponse(BaseModel):
     action: str
     score:int
     reasons:list[str]
+    policy_version: str
 
 class ThreatLogResponse(BaseModel):
     id: int

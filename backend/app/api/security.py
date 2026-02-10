@@ -23,6 +23,8 @@ def secure_prompt(
         score=decision.score,
         action=decision.action,
         reasons=decision.reasons,
+        policy_version=decision.policy_version,
+
     )
 
     db.add(log)
@@ -34,6 +36,7 @@ def secure_prompt(
         score=decision.score,
         action=decision.action,
         reasons=decision.reasons,
+        policy_version=decision.policy_version
     )
 
 

@@ -1,3 +1,5 @@
+POLICY_VERSION = "1.0.0"
+
 from dataclasses import dataclass
 
 HIGH_RISK_KEYWORDS = [
@@ -22,6 +24,7 @@ class SecurityDecision:
     action:str
     score:int
     reasons: list[str]
+    policy_version: str
 
 def analyze_prompt(prompt:str)->SecurityDecision:
      text = prompt.lower()
@@ -31,7 +34,9 @@ def analyze_prompt(prompt:str)->SecurityDecision:
                risk_level="high",
                action="blocked",
                score=90,
-               reasons=["Detected high-risk keyword"]
+               reasons=["Detected high-risk keyword"],
+               policy_version="1.0.0"
+
           )
      
      elif any(keyword in text for keyword in MEDIUM_RISK_KEYWORDS):
@@ -39,13 +44,16 @@ def analyze_prompt(prompt:str)->SecurityDecision:
                risk_level="medium",
                action="review",
                score=60,
-               reasons=["Detected suspicious keyword"]
+               reasons=["Detected suspicious keyword"],
+               policy_version="1.0.0"
+
           )
      
      return SecurityDecision(
         risk_level="low",
         action="allowed",
         score=10,
-        reasons=[]
+        reasons=[],
+        policy_version=POLICY_VERSION
     )
 

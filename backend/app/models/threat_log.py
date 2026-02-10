@@ -22,5 +22,7 @@ class ThreatLog(Base):
     score = Column(Integer, nullable=False)
     action = Column(String, nullable=False)
     reasons = Column(JSON)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now)
+    policy_version = Column(String, nullable=False)
+
 
