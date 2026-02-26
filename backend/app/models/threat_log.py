@@ -24,5 +24,6 @@ class ThreatLog(Base):
     reasons = Column(JSON)
     created_at = Column(DateTime, default=datetime.now)
     policy_version = Column(String, nullable=False)
+    client_ip = Column(String, nullable=False)
 
 

@@ -1,59 +1,50 @@
-POLICY_VERSION = "1.0.0"
+from backend.app.core.security_config import MAX_RISK_SCORE, MEDIUM_RISK_SCORE
+from backend.app.core.security_config import POLICY_VERSION
 
-from dataclasses import dataclass
+print(POLICY_VERSION)
+print("policy_version" ,POLICY_VERSION)
 
-HIGH_RISK_KEYWORDS = [
-    "hack",
-    "password",
-    "exploit",
-    "bypass"
-]
+def analyze_prompt(prompt: str):
+    text = prompt.lower()
+    score = 0
+    reasons=[]
+    malicious_keywords = [
+        "hack", "bypass", "crack", "exploit",
+        "attack", "steal", "override", "breach"
+    ]
 
-MEDIUM_RISK_KEYWORDS = [
-    "scan",
-    "enumerate",
-    "probe",
-    "attack"
-]
+    sensitive_keywords = [
+        "admin", "password", "database",
+        "server", "login", "credentials", "token"
+    ]
 
+    for word in malicious_keywords:
+        if word in text:
+            score += 2
 
-   
-@dataclass
-class SecurityDecision:
-    risk_level:str
-    action:str
-    score:int
-    reasons: list[str]
-    policy_version: str
+    for word in sensitive_keywords:
+        if word in text:
+            score += 2
+            reasons.append({
+                "rule": "sensitive_keyword",
+                "message": f"Matched keyword: {word}",
+                 "score": 2
+            })
 
-def analyze_prompt(prompt:str)->SecurityDecision:
-     text = prompt.lower()
+    if score >= MAX_RISK_SCORE:
+        risk = "high"
+        action = "blocked"
+    elif score >= MEDIUM_RISK_SCORE:
+        risk = "medium"
+        action = "flagged"
+    else:
+        risk = "low"
+        action = "allowed"
 
-     if any(keyword in text for keyword in HIGH_RISK_KEYWORDS): 
-          return SecurityDecision(
-               risk_level="high",
-               action="blocked",
-               score=90,
-               reasons=["Detected high-risk keyword"],
-               policy_version="1.0.0"
-
-          )
-     
-     elif any(keyword in text for keyword in MEDIUM_RISK_KEYWORDS):
-          return SecurityDecision(
-               risk_level="medium",
-               action="review",
-               score=60,
-               reasons=["Detected suspicious keyword"],
-               policy_version="1.0.0"
-
-          )
-     
-     return SecurityDecision(
-        risk_level="low",
-        action="allowed",
-        score=10,
-        reasons=[],
-        policy_version=POLICY_VERSION
-    )
-
+    return {
+    "risk": risk,
+    "score": score,
+    "action": action,
+    "reasons":reasons,
+    "policy_version": POLICY_VERSION
+}
