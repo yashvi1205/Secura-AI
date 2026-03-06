@@ -1,15 +1,14 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from backend.app.db.base import Base
-from backend.app.models import threat_log
 
-DATABASE_URL = "postgresql://postgres:121205@localhost:5432/secura_ai"
-engine = create_engine(DATABASE_URL) #opens the connection pipeline
-SessionLocal = sessionmaker(
-    autocommit=False,
-    autoflush=False,
-    bind=engine
-    )    #creates the session when needed
+from backend.app.core.config import settings
+
+# Ensure models are imported so SQLAlchemy can register them for metadata/migrations.
+from backend.app.models import threat_log  # noqa: F401
+
+
+engine = create_engine(settings.database_url, pool_pre_ping=True)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
 def get_db():
