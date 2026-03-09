@@ -1,0 +1,29 @@
+name: Build Server Image
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "server-v*"
+
+permissions:
+  contents: read
+
+jobs:
+  docker-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build image
+        run: |
+          docker build -f backend/Dockerfile -t secura-ai-server:${GITHUB_REF_NAME} .
+          docker save secura-ai-server:${GITHUB_REF_NAME} -o secura-ai-server_${GITHUB_REF_NAME}.tar
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: secura-ai-server-image
+          path: secura-ai-server_${{ github.ref_name }}.tar
+

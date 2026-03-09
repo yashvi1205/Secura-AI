@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Literal
 
 from pydantic import BaseModel, Field
 
@@ -41,6 +41,11 @@ class IngestEvent(BaseModel):
 
 class IngestBatch(BaseModel):
     events: List[IngestEvent] = Field(..., min_length=1, max_length=500)
+    sent_at: datetime = Field(default_factory=datetime.utcnow)
+
+    # Optional agent-side signing for tamper resistance.
+    signature: Optional[str] = None
+    signature_alg: Optional[Literal["hmac-sha256"]] = None
 
 
 class IngestResponse(BaseModel):

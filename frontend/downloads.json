@@ -1,0 +1,45 @@
+{
+  "version": "0.1.0",
+  "platforms": [
+    {
+      "id": "windows",
+      "title": "Windows",
+      "subtitle": "Agent + tools",
+      "assets": [
+        {
+          "name": "Secura Agent (x64)",
+          "arch": "x64",
+          "version": "0.1.0",
+          "url": "#"
+        }
+      ]
+    },
+    {
+      "id": "macos",
+      "title": "macOS",
+      "subtitle": "Agent + tools",
+      "assets": [
+        {
+          "name": "Secura Agent (arm64)",
+          "arch": "arm64",
+          "version": "0.1.0",
+          "url": "#"
+        }
+      ]
+    },
+    {
+      "id": "linux",
+      "title": "Linux",
+      "subtitle": "Agent + tools",
+      "assets": [
+        {
+          "name": "Secura Agent (x64)",
+          "arch": "x64",
+          "version": "0.1.0",
+          "url": "#"
+        }
+      ]
+    }
+  ]
+}
+

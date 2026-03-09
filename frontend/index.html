@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <base href="/ui/" />
+    <title>Secura AI – Self-hosted Developer Security Layer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand__logo">S</div>
+            <div class="brand__text">
+                <div class="brand__name">Secura AI</div>
+                <div class="brand__tag">Self-hosted developer security layer</div>
+            </div>
+        </div>
+
+        <nav class="nav">
+            <div class="nav__groupLabel">Marketing</div>
+            <button class="nav__item nav__item--active" data-tab="home">
+                <span class="nav__icon">⌂</span>
+                Home
+            </button>
+            <button class="nav__item" data-tab="downloads">
+                <span class="nav__icon">⇩</span>
+                Downloads
+            </button>
+            <button class="nav__item" data-tab="pricing">
+                <span class="nav__icon">▤</span>
+                Pricing
+            </button>
+            <button class="nav__item" data-tab="docs">
+                <span class="nav__icon">?</span>
+                Docs
+            </button>
+
+            <div class="nav__groupLabel">Console</div>
+            <button class="nav__item" data-tab="overview">
+                <span class="nav__icon">◷</span>
+                Overview
+            </button>
+            <button class="nav__item" data-tab="events">
+                <span class="nav__icon">≋</span>
+                Live Events
+            </button>
+            <button class="nav__item" data-tab="detections">
+                <span class="nav__icon">!</span>
+                Detections
+            </button>
+            <button class="nav__item" data-tab="incidents">
+                <span class="nav__icon">⦿</span>
+                Incidents
+            </button>
+            <button class="nav__item" data-tab="analyze">
+                <span class="nav__icon">▦</span>
+                Legacy Analyzer
+            </button>
+
+            <div class="nav__groupLabel">System</div>
+            <button class="nav__item" data-tab="settings">
+                <span class="nav__icon">⚙</span>
+                Settings
+            </button>
+        </nav>
+
+        <div class="sidebar__footer">
+            <div class="muted">API</div>
+            <div class="mono" id="apiBaseLabel">http://127.0.0.1:8000</div>
+            <div class="muted" style="margin-top:10px">Auth</div>
+            <div class="mono clip" id="apiKeyLabel">X-Secura-Key: —</div>
+        </div>
+    </aside>
+
+    <main class="main">
+        <header class="topbar">
+            <div class="topbar__title" id="pageTitle">Home</div>
+            <div class="topbar__actions">
+                <input class="input input--sm mono" id="apiBase" value="http://127.0.0.1:8000" />
+                <input class="input input--sm mono" id="apiKey" placeholder="X-Secura-Key (for console endpoints)" />
+                <button class="btn btn--ghost" id="saveApiBase">Save</button>
+                <button class="btn" id="refresh">Refresh</button>
+            </div>
+        </header>
+
+        <section class="content">
+            <div class="panel" data-tab-panel="home">
+                <div class="hero">
+                    <div>
+                        <div class="hero__eyebrow">Self-hosted security for LLM development</div>
+                        <div class="hero__title">Secure your prompts, tools, and model workflows.</div>
+                        <div class="hero__subtitle">
+                            Secura AI runs as a backend security layer for developers and teams. It logs activity, detects risky behavior,
+                            and surfaces incidents with who/what/when/where — before your training data or systems get compromised.
+                        </div>
+                        <div class="hero__actions">
+                            <button class="btn" data-goto="downloads">Download</button>
+                            <button class="btn btn--ghost" data-goto="docs">Quickstart</button>
+                        </div>
+                    </div>
+                    <div class="hero__card">
+                        <div class="heroStat">
+                            <div class="heroStat__label">Signals</div>
+                            <div class="heroStat__value">IDE • SDK • CI</div>
+                        </div>
+                        <div class="heroStat">
+                            <div class="heroStat__label">Detections</div>
+                            <div class="heroStat__value">Rules + anomalies</div>
+                        </div>
+                        <div class="heroStat">
+                            <div class="heroStat__label">Response</div>
+                            <div class="heroStat__value">Incidents + alerts</div>
+                        </div>
+                        <div class="muted" style="margin-top:10px">
+                            Run fully self-hosted. Keep sensitive data in your environment.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cards3">
+                    <div class="card">
+                        <div class="card__header">
+                            <div class="card__title">Automatic audit trail</div>
+                            <div class="card__subtitle">Capture prompts, tool calls, and key workflow events</div>
+                        </div>
+                        <div class="card__body">
+                            Filter by developer, project, model, risk level, and time. Keep everything searchable for investigations.
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card__header">
+                            <div class="card__title">Policy enforcement</div>
+                            <div class="card__subtitle">Log, warn, or block based on policy</div>
+                        </div>
+                        <div class="card__body">
+                            Start with the MVP policy pack and evolve into org rules. Keep deterministic controls and auditability.
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card__header">
+                            <div class="card__title">Incident intelligence</div>
+                            <div class="card__subtitle">Correlate detections into actionable incidents</div>
+                        </div>
+                        <div class="card__body">
+                            Secura highlights unusual activity and policy violations with context: host, IP, trace/session, and timeline.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel hidden" data-tab-panel="downloads">
+                <div class="pageHdr">
+                    <div>
+                        <div class="pageHdr__title">Downloads</div>
+                        <div class="pageHdr__subtitle">Install agents and components for your environment.</div>
+                    </div>
+                    <div class="pill pill--muted" id="downloadsMeta">—</div>
+                </div>
+                <div class="downloadGrid" id="downloadsGrid"></div>
+            </div>
+
+            <div class="panel hidden" data-tab-panel="pricing">
+                <div class="pageHdr">
+                    <div>
+                        <div class="pageHdr__title">Pricing</div>
+                        <div class="pageHdr__subtitle">Choose the security level that matches your risk profile.</div>
+                    </div>
+                </div>
+                <div class="pricingGrid">
+                    <div class="priceCard">
+                        <div class="priceCard__title">Free</div>
+                        <div class="priceCard__price">$0</div>
+                        <div class="muted">Local console + basic detections</div>
+                        <ul class="list">
+                            <li>Prompt risk scoring (MVP)</li>
+                            <li>Activity logs</li>
+                            <li>Basic incidents</li>
+                        </ul>
+                        <button class="btn btn--ghost" data-goto="docs">Get started</button>
+                    </div>
+                    <div class="priceCard priceCard--hot">
+                        <div class="priceCard__title">Pro</div>
+                        <div class="priceCard__price">Self-hosted</div>
+                        <div class="muted">Alerts + policies + team features</div>
+                        <ul class="list">
+                            <li>API key management</li>
+                            <li>Detections pipeline (async)</li>
+                            <li>Integrations (webhook/Slack/email)</li>
+                        </ul>
+                        <button class="btn" data-goto="downloads">Deploy</button>
+                    </div>
+                    <div class="priceCard">
+                        <div class="priceCard__title">Enterprise</div>
+                        <div class="priceCard__price">Custom</div>
+                        <div class="muted">SSO, SIEM, retention, compliance</div>
+                        <ul class="list">
+                            <li>SSO + RBAC</li>
+                            <li>SIEM/SOAR connectors</li>
+                            <li>Advanced anomaly detection</li>
+                        </ul>
+                        <button class="btn btn--ghost">Contact</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel hidden" data-tab-panel="docs">
+                <div class="pageHdr">
+                    <div>
+                        <div class="pageHdr__title">Docs</div>
+                        <div class="pageHdr__subtitle">Quickstart for self-hosted deployment and SDK use.</div>
+                    </div>
+                </div>
+
+                <div class="docGrid">
+                    <div class="card">
+                        <div class="card__header">
+                            <div class="card__title">1) Bootstrap an org + API key</div>
+                            <div class="card__subtitle">Server side (admin)</div>
+                        </div>
+                        <div class="card__body">
+                            Set `BOOTSTRAP_TOKEN` on the server and call `POST /admin/bootstrap` with `X-Bootstrap-Token`.\n                            Copy the returned `api_key` into Settings.\n                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card__header">
+                            <div class="card__title">2) Send telemetry</div>
+                            <div class="card__subtitle">Agent/SDK</div>
+                        </div>
+                        <div class="card__body">
+                            Use the Python SDK in `sdk/python` to send `prompt_sent` events to `POST /ingest/events`.\n                            The server will create detections + incidents.\n                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card__header">
+                            <div class="card__title">3) Investigate</div>
+                            <div class="card__subtitle">Console</div>
+                        </div>
+                        <div class="card__body">
+                            Use Overview, Live Events, Detections, and Incidents. Filter by risk/action and follow trace ids.\n                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel hidden" data-tab-panel="overview">
+                <div class="pageHdr">
+                    <div>
+                        <div class="pageHdr__title">Console Overview</div>
+                        <div class="pageHdr__subtitle">Operational visibility into your org’s model security.</div>
+                    </div>
+                    <div class="pill pill--muted" id="consoleStatus">Console: —</div>
+                </div>
+
+                <div class="kpis kpis--console">
+                    <div class="kpi">
+                        <div class="kpi__label">Total events</div>
+                        <div class="kpi__value" id="kpiEvents">—</div>
+                    </div>
+                    <div class="kpi">
+                        <div class="kpi__label">Detections</div>
+                        <div class="kpi__value" id="kpiDetections">—</div>
+                    </div>
+                    <div class="kpi">
+                        <div class="kpi__label">High</div>
+                        <div class="kpi__value kpi__value--high" id="kpiDetHigh">—</div>
+                    </div>
+                    <div class="kpi">
+                        <div class="kpi__label">Open incidents</div>
+                        <div class="kpi__value" id="kpiOpenIncidents">—</div>
+                    </div>
+                </div>
+
+                <div class="callout">
+                    <div class="callout__title">Tip</div>
+                    <div class="callout__body">
+                        If console metrics show “Unauthorized”, open Settings and paste your `X-Secura-Key` (created via `/admin/bootstrap`).
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel hidden" data-tab-panel="events">
+                <div class="pageHdr">
+                    <div>
+                        <div class="pageHdr__title">Live Events</div>
+                        <div class="pageHdr__subtitle">Near real-time stream (polling in MVP).</div>
+                    </div>
+                    <div class="row">
+                        <button class="btn btn--ghost" id="eventsToggle">Start</button>
+                        <div class="pill pill--muted" id="eventsMeta">—</div>
+                    </div>
+                </div>
+                <div class="tableWrap">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Time</th>
+                                <th>Type</th>
+                                <th>Source</th>
+                                <th>IP</th>
+                                <th>Trace</th>
+                                <th>Payload</th>
+                            </tr>
+                        </thead>
+                        <tbody id="eventsBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="panel hidden" data-tab-panel="detections">
+                <div class="pageHdr">
+                    <div>
+                        <div class="pageHdr__title">Detections</div>
+                        <div class="pageHdr__subtitle">Policy hits produced by the detection pipeline.</div>
+                    </div>
+                </div>
+                <div class="filters">
+                    <select class="input input--sm" id="detRisk">
+                        <option value="">Risk: any</option>
+                        <option value="low">low</option>
+                        <option value="medium">medium</option>
+                        <option value="high">high</option>
+                    </select>
+                    <select class="input input--sm" id="detAction">
+                        <option value="">Action: any</option>
+                        <option value="allowed">allowed</option>
+                        <option value="flagged">flagged</option>
+                        <option value="blocked">blocked</option>
+                    </select>
+                    <button class="btn btn--ghost" id="detRefresh">Refresh</button>
+                    <div class="spacer"></div>
+                    <div class="muted" id="detMeta">—</div>
+                </div>
+                <div class="tableWrap">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Time</th>
+                                <th>Risk</th>
+                                <th>Action</th>
+                                <th>Score</th>
+                                <th>Event</th>
+                                <th>Hits</th>
+                            </tr>
+                        </thead>
+                        <tbody id="detBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="panel hidden" data-tab-panel="incidents">
+                <div class="pageHdr">
+                    <div>
+                        <div class="pageHdr__title">Incidents</div>
+                        <div class="pageHdr__subtitle">Grouped detections that require investigation.</div>
+                    </div>
+                </div>
+                <div class="filters">
+                    <select class="input input--sm" id="incStatus">
+                        <option value="">Status: any</option>
+                        <option value="open">open</option>
+                        <option value="ack">ack</option>
+                        <option value="resolved">resolved</option>
+                    </select>
+                    <button class="btn btn--ghost" id="incRefresh">Refresh</button>
+                    <div class="spacer"></div>
+                    <div class="muted" id="incMeta">—</div>
+                </div>
+                <div class="tableWrap">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Created</th>
+                                <th>Status</th>
+                                <th>Severity</th>
+                                <th>Title</th>
+                                <th>Summary</th>
+                            </tr>
+                        </thead>
+                        <tbody id="incBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="panel hidden" data-tab-panel="analyze">
+                <div class="grid">
+                    <div class="card card--span2">
+                        <div class="card__header">
+                            <div class="card__title">Request context</div>
+                            <div class="card__subtitle">Optional metadata for legacy prompt analysis logging</div>
+                        </div>
+                        <div class="card__body">
+                            <div class="form">
+                                <label class="field">
+                                    <div class="field__label">Developer ID</div>
+                                    <input class="input" id="developerId" placeholder="e.g. dev_123" />
+                                </label>
+                                <label class="field">
+                                    <div class="field__label">Project</div>
+                                    <input class="input" id="project" placeholder="e.g. payments-service" />
+                                </label>
+                                <label class="field">
+                                    <div class="field__label">Model</div>
+                                    <input class="input" id="model" placeholder="e.g. gpt-4.1 / llama" />
+                                </label>
+                                <label class="field">
+                                    <div class="field__label">Activity type</div>
+                                    <input class="input" id="activityType" placeholder="e.g. codegen / review / chat" />
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <div class="card__title">Analyze prompt</div>
+                            <div class="card__subtitle">Runs MVP checks and writes to `threat_logs`</div>
+                        </div>
+                        <div class="card__body">
+                            <textarea class="textarea mono" id="promptInput" placeholder="Paste a prompt you want to send to a model…"></textarea>
+                            <div class="row">
+                                <button class="btn" id="analyzeBtn">Analyze & Log</button>
+                                <button class="btn btn--ghost" id="fillExample">Fill example</button>
+                                <div class="spacer"></div>
+                                <div class="pill pill--muted" id="policyVersion">Policy: —</div>
+                            </div>
+                            <div class="result" id="result">
+                                <div class="result__empty">No analysis yet.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel hidden" data-tab-panel="settings">
+                <div class="pageHdr">
+                    <div>
+                        <div class="pageHdr__title">Settings</div>
+                        <div class="pageHdr__subtitle">Configure API base and your console API key.</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card__header">
+                        <div class="card__title">Connection</div>
+                        <div class="card__subtitle">Saved locally in your browser</div>
+                    </div>
+                    <div class="card__body">
+                        <div class="form form--one">
+                            <label class="field">
+                                <div class="field__label">API base</div>
+                                <input class="input mono" id="apiBase2" placeholder="http://127.0.0.1:8000" />
+                            </label>
+                            <label class="field">
+                                <div class="field__label">X-Secura-Key</div>
+                                <input class="input mono" id="apiKey2" placeholder="sec_..." />
+                            </label>
+                        </div>
+                        <div class="row">
+                            <button class="btn" id="saveSettings">Save settings</button>
+                            <div class="spacer"></div>
+                            <div class="muted" id="settingsMeta">—</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

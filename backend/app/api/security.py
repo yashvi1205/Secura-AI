@@ -21,27 +21,31 @@ def secure_prompt(
     client_ip = http_request.client.host
     result = analyze_prompt(user_prompt)
 
-    risk = result["risk"]
+    risk_level = result["risk_level"]
     score = result["score"]
     action = result["action"]
-    reasons=result["reasons"]
+    reasons = result["reasons"]
     log = ThreatLog(
         prompt=user_prompt,
-        risk_level=risk,
+        risk_level=risk_level,
         score=score,
         action=action,
         reasons=reasons,
         policy_version=POLICY_VERSION,
-        client_ip=client_ip
+        client_ip=client_ip,
+        developer_id=request.developer_id,
+        project=request.project,
+        model=request.model,
+        activity_type=request.activity_type,
+        activity_meta=request.activity_meta,
     )
 
-    print("FINAL POLICY:", log.policy_version)
     db.add(log)
     db.commit()
     db.refresh(log)
 
     return SecureResponse(
-        risk_level=risk,
+        risk_level=risk_level,
         score=score,
         action=action,
         reasons=reasons,             

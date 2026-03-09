@@ -4,21 +4,49 @@ from backend.app.db.base import Base
 from backend.app.api.security import router as security_router
 from backend.app.api.logs import router as logs_router
 from fastapi import Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, RedirectResponse
 from collections import defaultdict,deque
 from datetime import datetime,timedelta
 from backend.app.api.admin import router as admin_router
-import os
+from backend.app.api.catalog import router as catalog_router
+from backend.app.api.bootstrap import router as bootstrap_router
+from backend.app.api.console import router as console_router
+from backend.app.api.ingest import router as ingest_router
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from pathlib import Path
+
+from backend.app.core.config import settings
 
 app=FastAPI()
 
-RATE_LIMIT = int(os.getenv("RATE_LIMIT", 10))
-RATE_WINDOW = int(os.getenv("RATE_WINDOW", 60))
+RATE_LIMIT = settings.rate_limit
+RATE_WINDOW = settings.rate_window_seconds
 client_requests = defaultdict(deque)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[o.strip() for o in settings.cors_allow_origins.split(",")] if settings.cors_allow_origins != "*" else ["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(security_router)
 app.include_router(logs_router)
 app.include_router(admin_router)
+app.include_router(bootstrap_router)
+app.include_router(catalog_router)
+app.include_router(console_router)
+app.include_router(ingest_router)
+
+repo_root = Path(__file__).resolve().parents[2]  # backend/app/main.py -> project root
+frontend_dir = repo_root / "frontend"
+if frontend_dir.exists():
+    @app.get("/ui")
+    def redirect_ui():
+        return RedirectResponse(url="/ui/", status_code=302)
+    app.mount("/ui", StaticFiles(directory=str(frontend_dir), html=True), name="ui")
 
 @app.middleware("http")
 async def rate_limit_middleware(request:Request,call_next):
@@ -45,11 +73,6 @@ async def rate_limit_middleware(request:Request,call_next):
 def root():
     return {"status": "Secura AI running"}
 
-Base.metadata.create_all(bind=engine)
-
-
-@app.get("/")
-
-def root():
-    return{"service":"Secura AI","status":"running"}
+if settings.auto_create_schema:
+    Base.metadata.create_all(bind=engine)
 

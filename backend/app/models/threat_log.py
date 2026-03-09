@@ -11,7 +11,7 @@ class ThreatLog(Base):
             name="risk_level_check"
         ),
          CheckConstraint(
-            "action IN ('allowed', 'blocked')",
+            "action IN ('allowed', 'flagged', 'blocked')",
             name="action_check"
         ),
     )
@@ -25,5 +25,10 @@ class ThreatLog(Base):
     created_at = Column(DateTime, default=datetime.now)
     policy_version = Column(String, nullable=False)
     client_ip = Column(String, nullable=False)
+    developer_id = Column(String, nullable=True)
+    project = Column(String, nullable=True)
+    model = Column(String, nullable=True)
+    activity_type = Column(String, nullable=True)
+    activity_meta = Column(JSON, nullable=True)
 
 
